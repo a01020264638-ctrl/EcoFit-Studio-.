@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>EcoFit Studio – 지속가능 패션 웹앱</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Noto Sans KR', sans-serif;
+        scroll-behavior: smooth;
+        background: #f8fdf8;
+    }
+
+    /* 메인 화면 */
+    .main {
+        height: 100vh;
+        background: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+        padding: 20px;
+    }
+    .main h1 {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+    .main p {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    section {
+        max-width: 900px;
+        margin: auto;
+        padding: 70px 20px;
+    }
+
+    h2 {
+        font-size: 32px;
+        margin-bottom: 25px;
+        color: #2c5e3f;
+    }
+
+    /* Eco Finder */
+    #clothSelect {
+        padding: 12px;
+        font-size: 18px;
+        width: 100%;
+        max-width: 300px;
+    }
+    .result-box {
+        margin-top: 20px;
+        padding: 18px;
+        background: #e8f7ec;
+        border-radius: 10px;
+        display: none;
+    }
+
+    /* Upcycle 이미지 */
+    .upcycle-img {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 12px;
+        margin: 20px 0;
+    }
+
+    /* 소재 등급표 */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 12px;
+        text-align: center;
+    }
+    .eco-good { color: green; }
+    .eco-mid { color: orange; }
+    .eco-bad { color: red; }
+
+    /* 탄소발자국 그래프 */
+    #carbonGraphBox {
+        width: 100%;
+        height: 200px;
+        background: #dff2e1;
+        border-radius: 12px;
+        margin-top: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+    #carbonBar {
+        height: 100%;
+        width: 0;
+        background: #2c5e3f;
+        transition: width 0.8s;
+    }
+
+    /* 버튼 */
+    .btn {
+        padding: 12px 20px;
+        background: #2c5e3f;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 12px;
+        font-size: 16px;
+    }
+
+    /* 지도 */
+    #map {
+        width: 100%;
+        height: 280px;
+        background: #e8e8e8;
+        border-radius: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+</head>
+
+<body>
+
+<!-- 1. 메인 화면 -->
+<div class="main" id="home">
+    <h1>Fashion Meets Nature</h1>
+    <p>지속가능 패션을 시작할 시간</p>
+    <a href="#finder" style="color:white; font-size:20px;">▼ 아래로 스크롤</a>
+</div>
+
+<!-- 2. Eco Style Finder -->
+<section id="finder">
+    <h2>Eco Style Finder</h2>
+    <p>입고 싶은 옷을 선택하면 친환경 코디를 추천합니다.</p>
+
+    <select id="clothSelect">
+        <option value="">선택하세요</option>
+        <option value="white">화이트 셔츠</option>
+        <option value="jean">청바지</option>
+        <option value="hood">후드티</option>
+    </select>
+
+    <div id="result" class="result-box"></div>
+</section>
+
+<!-- 3. Upcycle DIY Zone -->
+<section id="upcycle">
+    <h2>Upcycle DIY Zone</h2>
+    <p>버려지는 옷도 새로운 패션 아이템이 될 수 있어요!</p>
+
+    <img src="https://images.unsplash.com/photo-1585386959984-a4155228f9c7?auto=format&fit=crop&w=1350&q=80"
+         alt="업사이클 에코백" class="upcycle-img">
+
+    <p><strong>설명:</strong> 오래된 청바지를 잘라서 에코백으로 리폼한 과정 사진입니다.</p>
+</section>
+
+<!-- 4. 소재 환경 등급표 -->
+<section id="material">
+    <h2>소재 환경 등급표</h2>
+    <p>소재별 환경 영향을 한눈에 확인해보세요.</p>
+
+    <table>
+        <tr>
+            <th>소재</th>
+            <th>탄소배출량</th>
+            <th>물 사용량</th>
+            <th>생분해성</th>
+        </tr>
+        <tr>
+            <td>리사이클 폴리</td>
+            <td class="eco-good">● 낮음</td>
+            <td class="eco-mid">● 중간</td>
+            <td class="eco-mid">● 보통</td>
+        </tr>
+        <tr>
+            <td>코튼(면)</td>
+            <td class="eco-mid">● 중간</td>
+            <td class="eco-bad">● 많음</td>
+            <td class="eco-good">● 우수</td>
+        </tr>
+    </table>
+
+    <p style="margin-top:15px;">리사이클 폴리는 새처럼 가볍게, 코튼은 자연처럼 편안하게 🌿</p>
+</section>
+
+<!-- 5. 탄소발자국 계산기 -->
+<section id="carbon">
+    <h2>탄소발자국 계산기</h2>
+    <p>한 달 동안 구매한 옷 개수를 입력하세요.</p>
+
+    <input id="clothCount" type="number" min="0" placeholder="예: 4" style="padding:12px; font-size:16px;">
+    <button class="btn" onclick="calcCarbon()">계산하기</button>
+
+    <div id="carbonGraphBox">
+        <div id="carbonBar"></div>
+    </div>
+    <p id="carbonTip" style="margin-top:15px; font-weight:bold;"></p>
+</section>
+
+<!-- 6. 의류 기부·수거 포인트 -->
+<section id="map-section">
+    <h2>의류 기부·수거 포인트</h2>
+    <p>내 위치를 기반으로 가장 가까운 수거함을 안내합니다.</p>
+
+    <button class="btn" onclick="findLocation()">내 위치 확인</button>
+
+    <div id="map">지도 준비 중...</div>
+</section>
+
+
+<script>
+/* ★ Eco Style Finder 기능 */
+document.getElementById('clothSelect').addEventListener('change', function () {
+    const value = this.value;
+    const box = document.getElementById('result');
+
+    let text = "";
+    if (value === "white") text = "화이트 셔츠 하나로도 자연을 지키는 스타일 만들기 🌿";
+    else if (value === "jean") text = "청바지 + 리사이클 코튼 자켓 조합은 최고의 지속가능 코디!";
+    else if (value === "hood") text = "후드티에는 업사이클 패브릭 가방을 매치해보세요!";
+    else text = "";
+
+    box.style.display = text ? "block" : "none";
+    box.innerHTML = text;
+});
+
+/* ★ 탄소발자국 계산 */
+function calcCarbon() {
+    const count = Number(document.getElementById('clothCount').value);
+    const bar = document.getElementById('carbonBar');
+    const tip = document.getElementById('carbonTip');
+
+    let width = Math.min(count * 20, 100);
+    bar.style.width = width + "%";
+
+    if (count === 0) tip.innerText = "이번 달은 매우 친환경적이에요! 🌎";
+    else if (count <= 3) tip.innerText = "좋아요! 필요한 만큼만 구매하고 있어요.";
+    else tip.innerText = "옷 구매를 조금만 줄이면 훨씬 친환경적일 거예요! 🌱";
+}
+
+/* ★ 위치 기반 수거함 기능 */
+function findLocation() {
+    const map = document.getElementById('map');
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (pos) {
+                map.innerHTML = `
+                    📍 현재 위치 확인됨<br>
+                    위도: ${pos.coords.latitude.toFixed(4)}<br>
+                    경도: ${pos.coords.longitude.toFixed(4)}<br><br>
+                    (실제 지도 API 연동 가능)
+                `;
+            },
+            function () {
+                map.innerHTML = "⚠ 위치 정보를 가져올 수 없습니다.";
+            }
+        );
+    } else {
+        map.innerHTML = "⚠ 브라우저가 위치 기능을 지원하지 않습니다.";
+    }
+}
+</script>
+
+</body>
+</html>
